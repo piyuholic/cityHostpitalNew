@@ -24,7 +24,7 @@ function App() {
         <Route exact path={"/Appointment"} component={Appointment} />
         <Route exact path={"/auth"} component={Auth}  />
       </Switch>
-      <Footer/>
+      <Footer/>    
     </>
   );
 }

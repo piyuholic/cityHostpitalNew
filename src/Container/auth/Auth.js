@@ -54,7 +54,7 @@ function Auth(props) {
                     {
                         reset === 'ture' ?
                         <div className="text-center"><button type="submit">submit</button></div>
-                        :
+                        :     
                         userType === 'Login' ?
                             <div className="text-center"><button type="submit">Login</button></div>
                             :
