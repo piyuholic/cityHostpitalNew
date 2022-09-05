@@ -10,6 +10,7 @@ import { Route, Switch } from 'react-router-dom';
 import Header from './Component/Header/Header';
 import Footer from './Component/Footer/Footer';
 import Auth from './Container/auth/Auth';
+import Medicines from './Container/Medicines/Medicines';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route exact path={"/Departments"} component={Departments} />
         <Route exact path={"/About"} component={About} />
         <Route exact path={"/Doctors"} component={Doctors} />
+        <Route exact path={"/Medicines"} component={Medicines} />
         <Route exact path={"/Contact"} component={Contact} />
         <Route exact path={"/Appointment"} component={Appointment} />
         <Route exact path={"/auth"} component={Auth}  />
