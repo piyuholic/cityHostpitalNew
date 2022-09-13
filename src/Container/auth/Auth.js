@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import * as yup from 'yup';
 
 function Auth(props) {
     const [userType, setuserType] = useState('Login');
@@ -9,17 +10,36 @@ function Auth(props) {
     const passref = useRef();
 
 
-    function handeling () {
-        passref.current.style.border='2px solid black'
+    function handeling() {
+        passref.current.style.border = '2px solid black'
         passref.current.focus()
         console.log(passref.current.value);
         console.log(emailref.current.value);
     }
-    
+
+    let authSchema;
+
+    if (userType === 'Login' && reset === false) {
+        authSchema = {
+            email: yup.string().email("Please Eneter Valid Email.").required("Please Enetr Your Email."),
+            password: yup.string().required("Please Enter Password.").min(8, "Password must be 8 characters long")
+        }
+    } else if (userType === 'signup' && reset === false) {
+        authSchema = {
+            nname: yup.string().required("Please Enter Your Name."),
+            email: yup.string().email("Please Eneter Valid Email.").required("Please Enetr Your Email."),
+            password: yup.string().required("Please Enter Password.").min(8, "Password must be 8 characters long")
+        }
+    } else if (reset === true) {
+        authSchema = {
+            password: yup.string().required("Please Enter Password.").min(8, "Password must be 8 characters long")
+        }
+    }
+
+    let schema = yup.object().shape(authSchema);
 
 
 
-    
     return (
         <section id="appointment" className="appointment">
             <div className="container">
@@ -62,7 +82,7 @@ function Auth(props) {
                             :
                             <div className="row">
                                 <div className="col-md-4 form-group mt-3 mt-md-0">
-                                    <input ref={passref} type="tel" className="form-control" name="password" id="password" placeholder="Your password" data-rule="minlen:4"  />
+                                    <input ref={passref} type="tel" className="form-control" name="password" id="password" placeholder="Your password" data-rule="minlen:4" />
                                     <div className="validate" />
                                 </div>
                             </div>
@@ -70,18 +90,18 @@ function Auth(props) {
 
                     {
                         reset === 'ture' ?
-                        <div className="text-center"><button type="submit">submit</button></div>
-                        :     
-                        userType === 'Login' ?
-                            <div className="text-center"><button onClick={handeling} type="submit">Login</button></div>
+                            <div className="text-center"><button type="submit">submit</button></div>
                             :
-                            <div className="text-center"><button type="submit">Signup</button></div>
+                            userType === 'Login' ?
+                                <div className="text-center"><button onClick={handeling} type="submit">Login</button></div>
+                                :
+                                <div className="text-center"><button type="submit">Signup</button></div>
                     }
                     {
                         userType === 'Login' ?
-                            <div>Create a new Account <button onClick={() => { setReset(false); setuserType('Singup')}}>Signup</button></div>
+                            <div>Create a new Account <button onClick={() => { setReset(false); setuserType('Singup') }}>Signup</button></div>
                             :
-                            <div>Already have Account <button onClick={() => { setReset(false);setuserType('Login')}}>Login</button></div>
+                            <div>Already have Account <button onClick={() => { setReset(false); setuserType('Login') }}>Login</button></div>
                     }
 
                     <span>Forgot password? <button onClick={() => setReset('ture')}>Click Hear</button></span>
