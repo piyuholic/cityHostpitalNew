@@ -20,11 +20,11 @@ function Contact(props) {
         },
         validationSchema: schema,
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            console.log(values);
         },
     });
 
-    const { handleChange, errors, handleSubmit } = formikObj;
+    const { handleChange, errors, handleSubmit ,touched, handleBlur} = formikObj;
 
     return (
         <div>
@@ -59,8 +59,8 @@ function Contact(props) {
                             </div>
                         </div>
                         <div className="col-lg-8 mt-5 mt-lg-0">
-                            <Formik values={formikObj} onSubmit={handleSubmit}>
-                                <Form action method="post" role="form" className="php-email-form">
+                            <Formik values={formikObj} >
+                                <Form onSubmit={handleSubmit} action method="post" role="form" className="php-email-form">
                                     <div className="row">
                                         <div className="col-md-6 form-group">
                                             <input
@@ -70,22 +70,23 @@ function Contact(props) {
                                                 id="name"
                                                 placeholder="Your Name"
                                                 onChange={handleChange}
-                                                required />
-                                            <p>{errors.name}</p>
+                                                onBlur={handleBlur}
+                                            />
+                                            <p>{errors.name && touched.name ? errors.name : ''}</p>
                                         </div>
 
                                         <div className="col-md-6 form-group mt-3 mt-md-0">
-                                            <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" onChange={handleChange} required />
-                                            <p>{errors.email}</p>
+                                            <input type="email" className="form-control" name="email" id="email" placeholder="Your Email" onChange={handleChange} onBlur={handleBlur} />
+                                            <p>{errors.email && touched.email ? errors.email : ''}</p>
                                         </div>
                                     </div>
                                     <div className="form-group mt-3">
-                                        <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject" onChange={handleChange} required />
-                                        <p>{errors.subject}</p>
+                                        <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject" onChange={handleChange} onBlur={handleBlur} />
+                                        <p>{errors.subject && touched.subject ? errors.subject: ''}</p>
                                     </div>
                                     <div className="form-group mt-3">
-                                        <textarea className="form-control" name="message" rows={5} placeholder="Message" onChange={handleChange} required defaultValue={""} />
-                                        <p>{errors.message}</p>
+                                        <textarea className="form-control" name="message" rows={5} placeholder="Message" onChange={handleChange} onBlur={handleBlur} defaultValue={""} />
+                                        <p>{errors.message && touched.message ? errors.message : ''}</p>
                                     </div>
                                     <div className="my-3">
                                         <div className="loading">Loading</div>
