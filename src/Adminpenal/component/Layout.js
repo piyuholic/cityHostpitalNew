@@ -99,8 +99,8 @@ export default function Layout({ children }) {
     };
 
     let displayList = [
-        { name: 'Medicines', to: '/medicines', icon: <MedicalServicesIcon /> },
-        { name: 'Doctors', to: '/doctors', icon: <LocalHospitalIcon /> }
+        { name: 'Medicines', to: '/Medicineadmin', icon: <MedicalServicesIcon /> },
+        { name: 'Doctors', to: '/Doctoradmin', icon: <LocalHospitalIcon /> }
     ]
 
     return (

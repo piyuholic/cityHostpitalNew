@@ -52,7 +52,7 @@ function Doctoradmin(props) {
         <div>
             <h1>Doctors</h1>
             <div>
-                <Button variant="outlined" startIcon={<AddIcon />} onClick={handleClickOpen}>
+                <Button variant="outlined"  onClick={handleClickOpen}>
                     ADD DOCTOR DETAILS
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
