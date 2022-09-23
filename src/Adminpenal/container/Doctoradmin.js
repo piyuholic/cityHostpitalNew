@@ -22,7 +22,27 @@ function Doctoradmin(props) {
     };
 
     const handleAdd = (values) => {
+        
+        let localData = JSON.parse(localStorage.getItem("Doctoradmin"));
+
+        let id = Math.floor(Math.random()*100000);
+
+        let data = {id: id,...values};
+
+        
+
+        if(localData === null){
+            localStorage.setItem("Doctoradmin", JSON.stringify([ data ]));
+        }else{
+            localData.push(data)
+            localStorage.setItem("Doctoradmin", JSON.stringify(localData));
+        }
+
+        console.log(localData);
+
+    const handleAdd = (values) => {
         console.log(values);
+
         setOpen(false);
         formikObj.resetForm()
     };
@@ -53,10 +73,10 @@ function Doctoradmin(props) {
             <h1>Doctors</h1>
             <div>
                 <Button variant="outlined"  onClick={handleClickOpen}>
-                    ADD DOCTOR DETAILS
+                    ADD DOCTOR 
                 </Button>
                 <Dialog open={open} onClose={handleClose}>
-                    <DialogTitle>ADD DOCTOR DETAILS</DialogTitle>
+                    <DialogTitle>ADD DOCTOR </DialogTitle>
                     <Formik values={formikObj}>
                         <Form onSubmit={handleSubmit}>
                             <DialogContent>
@@ -107,8 +127,7 @@ function Doctoradmin(props) {
             </div>
         </div>
     );
-};
-
-
+}
 
 export default Doctoradmin;
+

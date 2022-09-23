@@ -22,8 +22,21 @@ function Medicineadmin(props) {
         setOpen(false);
     };
 
-    const handleAdd = (values) => {
-        console.log(values);
+        const handleAdd = (values) => {
+
+            let localData = JSON.parse(localStorage.getItem("Medicineadmin"));
+    
+            let id = Math.floor(Math.random()*100000)
+    
+            let data = {id : id,... values};
+    
+            if(localData === null){
+                localStorage.setItem("Medicineadmin", JSON.stringify ([data]));
+            }else{
+                localData.push(data)
+                localStorage.setItem("Medicineadmin", JSON.stringify (localData));
+            }
+
         setOpen(false);
         formikObj.resetForm()
     };
