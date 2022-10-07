@@ -18,7 +18,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
+import PersonIcon from '@mui/icons-material/Person';
 import { NavLink } from 'react-router-dom';
+import { Person } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -100,7 +102,8 @@ export default function Layout({ children }) {
 
     let displayList = [
         { name: 'Medicines', to: '/Medicineadmin', icon: <MedicalServicesIcon /> },
-        { name: 'Doctors', to: '/Doctoradmin', icon: <LocalHospitalIcon /> }
+        { name: 'Doctors', to: '/Doctoradmin', icon: <LocalHospitalIcon /> },
+        { name: 'Patients', to: '/Patientadmin', icon: <Person/> }
     ]
 
     return (

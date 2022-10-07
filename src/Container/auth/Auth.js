@@ -49,11 +49,11 @@ function Auth(props) {
         initialValues: intVal,
         validationSchema: schema,
         onSubmit: values => {
-            console.log(values);
+            alert(JSON.stringify(values, null, 2));
         },
     });
 
-    const { handleChange, handleSubmit, errors, touched, handleBlur } = formikObj
+    const { handleChange, handleSubmit, errors } = formikObj
 
 
     return (
@@ -86,10 +86,9 @@ function Auth(props) {
                                                     className="form-control"
                                                     id="name"
                                                     placeholder="Your Name"
-                                                    onBlur={handleBlur}
                                                     onChange={handleChange}
                                                 />
-                                                <p>{errors.name && touched.name ? errors.name : ''}</p>
+                                                <p>{errors.name}</p>
                                                 <div className="validate" />
                                             </div>
                                         </div>
@@ -104,10 +103,9 @@ function Auth(props) {
                                         name="email"
                                         id="email"
                                         placeholder="Your Email"
-                                        onBlur={handleBlur}
                                         onChange={handleChange}
                                     />
-                                    <p>{errors.email && touched.email ? errors.email : ''}</p>
+                                    <p>{errors.email}</p>
                                     <div className="validate" />
                                 </div>
                             </div>
@@ -125,9 +123,8 @@ function Auth(props) {
                                                 id="password"
                                                 placeholder="Your Password"
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
                                             />
-                                            <p>{errors.password && touched.password ? errors.password : ''}</p>
+                                            <p>{errors.password}</p>
                                             <div className="validate" />
                                         </div>
                                     </div>
@@ -135,9 +132,9 @@ function Auth(props) {
 
                             {
                                 reset === true ?
-                                    <div className="text-center"><button type="submit">Submit</button></div> : userType === 'Login' ? <div className="text-center"><button type="submit">Login</button></div> 
-                            :
-                            <div className="text-center"><button type="submit">Signup</button></div>
+                                    <div className="text-center"><button type="submit">Submit</button></div>
+                                    :
+                                    userType === 'Login' ? <div className="text-center"><button type="submit">Login</button></div> : <div className="text-center"><button type="submit">Signup</button></div>
                             }
 
 
@@ -145,10 +142,7 @@ function Auth(props) {
                         </Form>
                     </Formik>
                     {
-                        userType === 'Login' ? <div className="text-center mt-2">Create a new account
-                            :
-                            <Link onClick={() => { setReset(false); setUserType('Signup') }}>Signup</Link> </div>
-                            : <div className='text-center mt-2' >Already have an Acoount? <Link onClick={() => { setReset(false); setUserType('Login') }}>Login</Link> </div>
+                        userType === 'Login' ? <div className="text-center mt-2">Create a new account: <Link onClick={() => { setReset(false); setUserType('Signup') }}>Signup</Link> </div> : <div className='text-center mt-2' >Already have an Acoount? <Link onClick={() => { setReset(false); setUserType('Login') }}>Login</Link> </div>
                     }
 
                     <div className="text-center mt-2"><Link onClick={() => setReset(true)}>Forgot Password?</Link></div>
