@@ -34,7 +34,7 @@ function Headar(props) {
                             <li><NavLink className="nav-link scrollto" to={"/Doctors"}>Doctors</NavLink></li>
                             <li><NavLink className="nav-link scrollto " to={"/About"}>About</NavLink></li>
                             <li><NavLink className="nav-link scrollto" to={"/Contact"}>Contact</NavLink></li>
-                            <li><NavLink className="nav-link scrollto" to={"/Appointment"}>appointment</NavLink></li>
+                            {/* <li><NavLink className="nav-link scrollto" to={"/Appointment"}>appointment</NavLink></li> */}
 
                         </ul>
                         <i className="bi bi-list mobile-nav-toggle" />

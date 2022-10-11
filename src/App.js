@@ -12,6 +12,7 @@ import Header from './Component/Header/Header';
 import Footer from './Component/Footer/Footer';
 import Auth from './Container/auth/Auth';
 import Layout from './Adminpenal/component/Layout';
+import Listappointment from './Container/Appointment/Listappointment';
 // import Medicineadmin from './Adminpenal/container/Medicineadmin';
 // import Doctoradmin from './Adminpenal/container/Doctoradmin';
 // import Patientadmin from './Adminpenal/container/Patientadmin';
@@ -29,6 +30,7 @@ function App() {
         <Route exact path={"/Contact"} component={Contact} />
         <Route exact path={"/Appointment"} component={Appointment} />
         <Route exact path={"/auth"} component={Auth}  />
+        <Route exact path={"/listappointment"} component={Listappointment}  />
       </Switch>
       <Footer/>    
     </>

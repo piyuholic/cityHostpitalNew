@@ -1,10 +1,30 @@
 import React from 'react';
 import * as yup from 'yup';
 import { Form, Formik, useFormik } from 'formik';
+import { useHistory } from 'react-router-dom';
 
 function Appointment(props) {
-    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+    const history = useHistory();
 
+    const handleAdd = (values) => {
+        let localData = JSON.parse(localStorage.getItem("apt"));
+
+        let id = Math.floor(Math.random()*10000)
+
+        let data = {
+            id,...values
+        }
+
+        if(localData === null){
+            localStorage.setItem("apt",JSON.stringify([data]))
+        }else{
+            localData.push(data)
+            localStorage.setItem("apt",JSON.stringify(localData))
+        }
+
+        history.push("/listappointment")
+    }
+    const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     let schema = yup.object().shape({
         name: yup.string().required("Please Enter Your Name.").matches(/^[A-Za-z ]*$/, 'Please enter valid name'),
@@ -12,9 +32,9 @@ function Appointment(props) {
         phone: yup.string().required("Please Enter Your Phone Number.").matches(phoneRegExp, 'Phone number is not valid').min(10, 'Enter min 10 digits').max(10, 'Enter max 10 digits'),
         date: yup.string().required("Please Enter Date.").matches(/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/, "Enter Date in Format."),
         department: yup.string().required("Please Select Department."),
-        message: yup.string().required("Please Enter Any Message.").min(50, "Enter Minimum 50 Characters"),
+        message: yup.string().required("Please Enter Any Message.").min(5, "Enter Minimum 5 Characters"),
         gender: yup.string().required("Please Select Gender."),
-        hobby: yup.array().min(1).of(yup.string().required("Please Select Hobby.")).required()
+        hobby: yup.array().min(1).of(yup.string().required()).required("Please Select Hobby.")
     });
 
     const formikObj = useFormik({
@@ -30,7 +50,7 @@ function Appointment(props) {
         },
         validationSchema: schema,
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            handleAdd(values)
         },
     });
 
@@ -61,11 +81,7 @@ function Appointment(props) {
                                     <div className="validate" />
                                 </div>
                                 <div className="col-md-4 form-group mt-3 mt-md-0">
-                                    <input 
-                                      onChange={handleChange} 
-                                      onBlur={handleBlur} 
-                                      type="text" 
-                                      className="form-control" name="phone" id="phone" placeholder="Your Phone" />
+                                    <input onChange={handleChange} onBlur={handleBlur} type="text" className="form-control" name="phone" id="phone" placeholder="Your Phone" />
                                     <p>{errors.phone && touched.phone ? errors.phone : ''}</p>
                                     <div className="validate" />
                                 </div>
