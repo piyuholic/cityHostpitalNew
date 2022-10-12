@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap'
 import Button from '@mui/material/Button';
+import { useHistory } from 'react-router-dom';
 
 function Listappointment(props) {
     const [deta, setData] = useState([]);
+    
+    const history = useHistory();
 
 
 
@@ -25,6 +28,11 @@ function Listappointment(props) {
         
         localStorage.setItem("apt", JSON.stringify(data))
         getDeta()
+    }
+
+    const handleEdit = (data) => {
+        console.log(data);
+        history.push("/appointment",data)
     }
 
     return (
@@ -54,7 +62,7 @@ function Listappointment(props) {
                                             >
                                                 Gender: {d.gender}
                                             </CardSubtitle>
-                                            <Button variant="contained" size="small" className='me-2' color="info">Edit</Button>
+                                            <Button variant="contained" size="small" className='me-2' color="info" onClick={() => handleEdit(d)}>Edit</Button>
                                             <Button variant="contained" size="small" color="error" onClick={() => handleDelete(d.id)}>Delete</Button>
                                         </CardBody>
                                     </Card>

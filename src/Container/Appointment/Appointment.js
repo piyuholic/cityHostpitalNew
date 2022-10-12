@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { Form, Formik, useFormik } from 'formik';
 import { useHistory } from 'react-router-dom';
 
+
 function Appointment(props) {
+    const [update, setUpdate] = useState(false)
+
+    useEffect(() => {
+        if(props.location.state !== null){
+        formikObj.setValues(props.location.state)
+        setUpdate(true)
+    }
+      },[]);
+
     const history = useHistory();
 
     const handleAdd = (values) => {
@@ -24,6 +34,11 @@ function Appointment(props) {
 
         history.push("/listappointment")
     }
+
+    const handleUpdate = (values) => {
+        console.log(values);
+    }
+
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
     let schema = yup.object().shape({
@@ -50,12 +65,11 @@ function Appointment(props) {
         },
         validationSchema: schema,
         onSubmit: values => {
-            handleAdd(values)
+            update ? handleUpdate(values) :handleAdd(values)
         },
     });
 
-    const { handleChange, errors, handleSubmit, handleBlur, touched } = formikObj;
-
+    const { handleChange, errors, handleSubmit, handleBlur, touched, values } = formikObj;
 
     return (
         <div>
@@ -71,29 +85,29 @@ function Appointment(props) {
                         <Form onSubmit={handleSubmit} className="php-email-form">
                             <div className="row">
                                 <div className="col-md-4 form-group ">
-                                    <input onChange={handleChange} onBlur={handleBlur} type="text" name="name" className="form-control" id="name" placeholder="Your Name" />
+                                    <input onChange={handleChange} onBlur={handleBlur} value={values.name} type="text" name="name" className="form-control" id="name" placeholder="Your Name" />
                                     <p>{errors.name && touched.name ? errors.name : ''}</p>
                                     <div className="validate" />
                                 </div>
                                 <div className="col-md-4 form-group mt-3 mt-md-0">
-                                    <input onChange={handleChange} onBlur={handleBlur} type="text" className="form-control" name="email" id="email" placeholder="Your Email" />
+                                    <input onChange={handleChange} onBlur={handleBlur} value={values.email} type="text" className="form-control" name="email" id="email" placeholder="Your Email" />
                                     <p>{errors.email && touched.email ? errors.email : ''}</p>
                                     <div className="validate" />
                                 </div>
                                 <div className="col-md-4 form-group mt-3 mt-md-0">
-                                    <input onChange={handleChange} onBlur={handleBlur} type="text" className="form-control" name="phone" id="phone" placeholder="Your Phone" />
+                                    <input onChange={handleChange} onBlur={handleBlur} value={values.phone} type="text" className="form-control" name="phone" id="phone" placeholder="Your Phone" />
                                     <p>{errors.phone && touched.phone ? errors.phone : ''}</p>
                                     <div className="validate" />
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-md-4 form-group mt-3">
-                                    <input onChange={handleChange} onBlur={handleBlur} type="text" name="date" className="form-control datepicker" id="date" placeholder="Appointment Date" />
+                                    <input onChange={handleChange} onBlur={handleBlur} value={values.date} type="text" name="date" className="form-control datepicker" id="date" placeholder="Appointment Date" />
                                     <p>{errors.date && touched.date ? errors.date : ''}</p>
                                     <div className="validate" />
                                 </div>
                                 <div className="col-md-4 form-group mt-3">
-                                    <select onChange={handleChange} onBlur={handleBlur} name="department" id="department" className="form-select">
+                                    <select onChange={handleChange} onBlur={handleBlur} value={values.department} name="department" id="department" className="form-select">
                                         <option value>Select Department</option>
                                         <option value="Department 1">Department 1</option>
                                         <option value="Department 2">Department 2</option>
@@ -104,7 +118,7 @@ function Appointment(props) {
                                 </div>
                             </div>
                             <div className="form-group mt-3">
-                                <textarea onChange={handleChange} onBlur={handleBlur} className="form-control" name="message" rows={5} placeholder="Message" defaultValue={""} />
+                                <textarea onChange={handleChange} onBlur={handleBlur} value={values.message} className="form-control" name="message" rows={5} placeholder="Message" defaultValue={""} />
                                 <p>{errors.message && touched.message ? errors.message : ''}</p>
                                 <div className="validate" />
                             </div>
@@ -112,8 +126,8 @@ function Appointment(props) {
                                     <label>
                                         Gender:
                                     </label>  <br />
-                                    <input type="radio" value="Male" name="gender" onChange={handleChange} onBlur={handleBlur}/> Male
-                                    <input type="radio" value="Female" name="gender" onChange={handleChange} onBlur={handleBlur}/> Female
+                                    <input type="radio" value="Male" name="gender" checked={values.gender === "Male"?true:false} onChange={handleChange} onBlur={handleBlur}/> Male
+                                    <input type="radio" value="Female" name="gender" checked={values.gender === "Female"?true:false} onChange={handleChange} onBlur={handleBlur}/> Female
                                 <p>{errors.gender && touched.gender ? errors.gender : ''}</p>
                                 <div className="validate" />
                             </div>
@@ -122,9 +136,9 @@ function Appointment(props) {
                                     <label>
                                         Hobby:
                                     </label>  <br />
-                                    <input type="checkbox" value="Gameing" name="hobby" onChange={handleChange} onBlur={handleBlur}/> Gameing
-                                    <input type="checkbox" value="Reading" name="hobby" onChange={handleChange} onBlur={handleBlur}/> Reading
-                                    <input type="checkbox" value="Playing" name="hobby" onChange={handleChange} onBlur={handleBlur}/> Playing
+                                    <input type="checkbox" value="Gameing" name="hobby"  onChange={handleChange} onBlur={handleBlur}/> Gameing
+                                    <input type="checkbox" value="Reading" name="hobby"  onChange={handleChange} onBlur={handleBlur}/> Reading
+                                    <input type="checkbox" value="Playing" name="hobby"  onChange={handleChange} onBlur={handleBlur}/> Playing
                                 <p>{errors.hobby && touched.hobby ? errors.hobby : ''}</p>
                                 <div className="validate" />
                             </div>
@@ -134,7 +148,7 @@ function Appointment(props) {
                                 <div className="error-message" />
                                 <div className="sent-message">Your appointment request has been sent successfully. Thank you!</div>
                             </div>
-                            <div className="text-center"><button type="submit">Make an Appointment</button></div>
+                            <div className="text-center"><button type="submit">{update ? "Update an Appointment" : "Make an Appointment"}</button></div>
                         </Form>
                     </Formik>
                 </div>
