@@ -2,41 +2,55 @@ import React, { useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { Form, Formik, useFormik } from 'formik';
 import { useHistory } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 
 function Appointment(props) {
     const [update, setUpdate] = useState(false)
 
     useEffect(() => {
-        if(props.location.state !== null){
-        formikObj.setValues(props.location.state)
-        setUpdate(true)
-    }
-      },[]);
+        if (props.location.state !== null) {
+            formikObj.setValues(props.location.state)
+            setUpdate(true)
+        }
+    }, []);
 
     const history = useHistory();
 
     const handleAdd = (values) => {
         let localData = JSON.parse(localStorage.getItem("apt"));
 
-        let id = Math.floor(Math.random()*10000)
+        let id = Math.floor(Math.random() * 10000)
 
         let data = {
-            id,...values
+            id, ...values
         }
 
-        if(localData === null){
-            localStorage.setItem("apt",JSON.stringify([data]))
-        }else{
+        if (localData === null) {
+            localStorage.setItem("apt", JSON.stringify([data]))
+        } else {
             localData.push(data)
-            localStorage.setItem("apt",JSON.stringify(localData))
+            localStorage.setItem("apt", JSON.stringify(localData))
         }
-
+        setUpdate(false)
         history.push("/listappointment")
     }
 
     const handleUpdate = (values) => {
-        console.log(values);
+        let localData = JSON.parse(localStorage.getItem("apt"))
+
+        let uData = localData.map((l) => {
+            if (l.id === values.id) {
+                return values;
+            } else {
+                return l;
+            }
+        })
+
+        localStorage.setItem("apt", JSON.stringify(uData))
+        history.replace();
+        setUpdate(false)
+        history.push("/listappointment")
     }
 
     const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -61,11 +75,11 @@ function Appointment(props) {
             department: '',
             message: '',
             gender: '',
-            hobby: ''
+            hobby: []
         },
         validationSchema: schema,
         onSubmit: values => {
-            update ? handleUpdate(values) :handleAdd(values)
+            update ? handleUpdate(values) : handleAdd(values)
         },
     });
 
@@ -80,6 +94,16 @@ function Appointment(props) {
                         <p>Aenean enim orci, suscipit vitae sodales ac, semper in ex. Nunc aliquam eget nibh eu euismod. Donec dapibus
                             blandit quam volutpat sollicitudin. Fusce tincidunt sit amet ex in volutpat. Donec lacinia finibus tortor.
                             Curabitur luctus eleifend odio. Phasellus placerat mi et suscipit pulvinar.</p>
+                    </div>
+
+                    <div className='row'>
+                        <div className='col-6 mb-3 link-title  linkbar'>
+                            <NavLink className='nav-link'  to={'/appointment'}>Make 
+                            Appointment</NavLink>
+                        </div>
+                        <div className='col-6 mb-3 link-title linkbar'>
+                            <NavLink className='nav-link' to={"/listappointment"}>List Appointment</NavLink>
+                        </div>
                     </div>
                     <Formik values={formikObj}>
                         <Form onSubmit={handleSubmit} className="php-email-form">
@@ -123,22 +147,22 @@ function Appointment(props) {
                                 <div className="validate" />
                             </div>
                             <div className="form-group mt-3">
-                                    <label>
-                                        Gender:
-                                    </label>  <br />
-                                    <input type="radio" value="Male" name="gender" checked={values.gender === "Male"?true:false} onChange={handleChange} onBlur={handleBlur}/> Male
-                                    <input type="radio" value="Female" name="gender" checked={values.gender === "Female"?true:false} onChange={handleChange} onBlur={handleBlur}/> Female
+                                <label>
+                                    Gender:
+                                </label>  <br />
+                                <input type="radio" value="Male" name="gender" checked={values.gender === "Male" ? true : false} onChange={handleChange} onBlur={handleBlur} /> Male
+                                <input type="radio" value="Female" name="gender" checked={values.gender === "Female" ? true : false} onChange={handleChange} onBlur={handleBlur} /> Female
                                 <p>{errors.gender && touched.gender ? errors.gender : ''}</p>
                                 <div className="validate" />
                             </div>
 
                             <div className="form-group mt-3">
-                                    <label>
-                                        Hobby:
-                                    </label>  <br />
-                                    <input type="checkbox" value="Gameing" name="hobby"  onChange={handleChange} onBlur={handleBlur}/> Gameing
-                                    <input type="checkbox" value="Reading" name="hobby"  onChange={handleChange} onBlur={handleBlur}/> Reading
-                                    <input type="checkbox" value="Playing" name="hobby"  onChange={handleChange} onBlur={handleBlur}/> Playing
+                                <label>
+                                    Hobby:
+                                </label>  <br />
+                                <input type="checkbox" value="Gameing" name="hobby" checked={values.hobby.some((h) => h === "Gameing")} onChange={handleChange} onBlur={handleBlur} /> Gameing
+                                <input type="checkbox" value="Reading" name="hobby" checked={values.hobby.some((h) => h === "Reading")} onChange={handleChange} onBlur={handleBlur} /> Reading
+                                <input type="checkbox" value="Playing" name="hobby" checked={values.hobby.some((h) => h === "Playing")} onChange={handleChange} onBlur={handleBlur} /> Playing
                                 <p>{errors.hobby && touched.hobby ? errors.hobby : ''}</p>
                                 <div className="validate" />
                             </div>
